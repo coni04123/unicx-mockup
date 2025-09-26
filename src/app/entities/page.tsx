@@ -34,8 +34,8 @@ function EntityTreeNode({
   onSelect,
   selectedEntity 
 }: EntityTreeNodeProps) {
-  const hasChildren = entity.children && entity.children.length > 0;
-  const isExpanded = expandedNodes.has(entity.id);
+  const hasChildren: boolean = Boolean(entity.children && entity.children.length > 0);
+  const isExpanded: boolean = Boolean(expandedNodes.has(entity.id));
   const isSelected = selectedEntity?.id === entity.id;
 
   const getEntityIcon = (type: Entity['type'], hasChildren: boolean, isExpanded: boolean) => {
@@ -147,7 +147,7 @@ export default function EntitiesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(['entity-1', 'entity-2']));
-  const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
+  const [selectedEntity, setSelectedEntity] = useState<Entity | undefined>(undefined);
 
   // Flatten entities for search
   const flattenEntities = (entities: Entity[]): Entity[] => {

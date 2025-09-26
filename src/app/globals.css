@@ -2,6 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 2025 Trending Green-Focused Design Tokens (Shadcn + Radix Style) */
+@layer base {
+  :root {
+    /* Background & Foreground */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    /* Card */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    /* Primary: Clay-Emerald Fusion (2025 Trending) */
+    --primary: 142 76% 36%;
+    --primary-foreground: 355.7 100% 97.3%;
+
+    /* Secondary */
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 222.2 84% 4.9%;
+
+    /* Muted */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent: Sage Green (2025 Trending) */
+    --accent: 93 20% 70%;
+    --accent-foreground: 142 76% 36%;
+
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border & Input */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 142 76% 36%;
+
+    /* Border Radius */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark Mode: Enhanced Green Focus */
+    --background: 142 50% 2%;
+    --foreground: 142 20% 95%;
+
+    --card: 142 50% 3%;
+    --card-foreground: 142 20% 95%;
+
+    --popover: 142 50% 3%;
+    --popover-foreground: 142 20% 95%;
+
+    /* Primary: Enhanced for Dark Mode */
+    --primary: 142 76% 45%;
+    --primary-foreground: 142 50% 2%;
+
+    --secondary: 142 30% 8%;
+    --secondary-foreground: 142 20% 80%;
+
+    --muted: 142 30% 6%;
+    --muted-foreground: 142 10% 60%;
+
+    /* Accent: Bottle Green for Dark */
+    --accent: 159 64% 20%;
+    --accent-foreground: 142 76% 80%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+
+    --border: 142 30% 12%;
+    --input: 142 30% 12%;
+    --ring: 142 76% 45%;
+  }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {

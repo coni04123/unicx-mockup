@@ -5,6 +5,8 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '@heroicons/react/24/outline';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface MetricCardProps {
   title: string;
@@ -32,11 +34,11 @@ export default function MetricCard({
   const getChangeColor = (type: 'increase' | 'decrease' | 'neutral') => {
     switch (type) {
       case 'increase':
-        return 'text-green-600';
+        return 'text-success-600';
       case 'decrease':
-        return 'text-red-600';
+        return 'text-error-600';
       default:
-        return 'text-gray-600';
+        return 'text-muted-foreground';
     }
   };
 
@@ -53,57 +55,59 @@ export default function MetricCard({
 
   if (loading) {
     return (
-      <div className="metric-card">
-        <div className="card-body">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className={`metric-card-icon ${iconColor} animate-pulse`}>
-                <div className="h-6 w-6 bg-white bg-opacity-30 rounded"></div>
-              </div>
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center space-x-4">
+            <div className={`p-3 rounded-lg ${iconColor} animate-pulse`}>
+              <div className="h-6 w-6 bg-white bg-opacity-30 rounded"></div>
             </div>
-            <div className="ml-5 w-0 flex-1">
-              <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
-              <div className="h-8 bg-gray-200 rounded animate-pulse mb-1"></div>
-              <div className="h-3 bg-gray-200 rounded animate-pulse w-24"></div>
+            <div className="space-y-2 flex-1">
+              <div className="h-4 bg-muted rounded animate-pulse"></div>
+              <div className="h-8 bg-muted rounded animate-pulse w-20"></div>
+              <div className="h-3 bg-muted rounded animate-pulse w-24"></div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="metric-card">
-      <div className="card-body">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className={`metric-card-icon ${iconColor}`}>
-              <IconComponent className="h-6 w-6" aria-hidden="true" />
-            </div>
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-center space-x-4">
+          <div className={`p-3 rounded-lg ${iconColor} text-white`}>
+            <IconComponent className="h-6 w-6" aria-hidden="true" />
           </div>
-          <div className="ml-5 w-0 flex-1">
-            <dl>
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                {title}
-              </dt>
-              <dd className="flex items-baseline">
-                <div className="text-2xl font-semibold text-gray-900">
-                  {value}
-                  {suffix && <span className="text-lg font-normal text-gray-500 ml-1">{suffix}</span>}
-                </div>
-                {change && (
-                  <div className={`ml-2 flex items-center text-sm ${getChangeColor(change.type)}`}>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-muted-foreground truncate">
+              {title}
+            </p>
+            <div className="flex items-baseline space-x-2">
+              <p className="text-2xl font-bold text-foreground">
+                {value}
+                {suffix && <span className="text-lg font-normal text-muted-foreground ml-1">{suffix}</span>}
+              </p>
+              {change && (
+                <Badge 
+                  variant={change.type === 'increase' ? 'default' : change.type === 'decrease' ? 'destructive' : 'secondary'}
+                  className="text-xs"
+                >
+                  <div className="flex items-center space-x-1">
                     {getChangeIcon(change.type)}
-                    <span className="ml-1">
-                      {Math.abs(change.value)}% {change.period}
-                    </span>
+                    <span>{Math.abs(change.value)}%</span>
                   </div>
-                )}
-              </dd>
-            </dl>
+                </Badge>
+              )}
+            </div>
+            {change && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {change.period}
+              </p>
+            )}
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

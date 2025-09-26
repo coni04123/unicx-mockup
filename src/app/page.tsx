@@ -6,6 +6,9 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import MetricCard from '@/components/dashboard/MetricCard';
 import AlertCard from '@/components/dashboard/AlertCard';
 import RecentActivity from '@/components/dashboard/RecentActivity';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   ChatBubbleLeftRightIcon,
   EyeIcon,
@@ -31,11 +34,21 @@ export default function Dashboard() {
     <DashboardLayout>
       <div className="space-y-6">
         {/* Page header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Welcome back! Here's what's happening with {currentTenant.name} today.
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+            <p className="text-muted-foreground">
+              Welcome back! Here's what's happening with {currentTenant.name} today.
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Badge variant="secondary" className="bg-sage-100 text-sage-800">
+              {currentTenant.subscriptionPlan}
+            </Badge>
+            <Button variant="outline" size="sm">
+              View Reports
+            </Button>
+          </div>
         </div>
 
         {/* Metrics grid */}

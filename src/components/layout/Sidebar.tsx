@@ -110,7 +110,7 @@ export default function Sidebar() {
     },
   ];
 
-  const getBadgeClasses = (color: 'red' | 'yellow' | 'green' | 'blue') => {
+  const getBadgeClasses = (color: 'red' | 'yellow' | 'green' | 'blue' | 'gray') => {
     switch (color) {
       case 'red':
         return 'bg-red-100 text-red-600';
@@ -120,6 +120,8 @@ export default function Sidebar() {
         return 'bg-green-100 text-green-600';
       case 'blue':
         return 'bg-blue-100 text-blue-600';
+      case 'gray':
+        return 'bg-gray-100 text-gray-600';
       default:
         return 'bg-gray-100 text-gray-600';
     }

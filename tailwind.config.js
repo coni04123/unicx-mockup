@@ -1,64 +1,201 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // Green-focused color palette
+        // 2025 Trending Green-Focused Design Tokens (Shadcn + Radix Style)
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        
+        // Primary: Clay-Emerald Fusion (2025 Trending)
         primary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+          50: '#f0fdf5',
+          100: '#dcfce8', 
+          200: '#bbf7d1',
+          300: '#86efad',
           400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+          500: '#16a34a', // Clay-Emerald fusion - 2025 trending
+          600: '#0d7a37',
+          700: '#0a5d2b',
+          800: '#084a23',
+          900: '#07391c',
+          950: '#032010',
         },
+        
         secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb', 
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+        },
+        
+        // 2025 Trending Green Variants
+        sage: {
+          50: '#f6f7f4',
+          100: '#eaede5',
+          200: '#d6ddcc',
+          300: '#b8c5a7', // Sage Green - trending 2025
+          400: '#9caf88',
+          500: '#7d9465',
+          600: '#627650',
+          700: '#4e5d40',
+          800: '#404c35',
+          900: '#37412f',
+        },
+        
+        bottle: {
+          50: '#f0fdf7',
+          100: '#dcfaec',
+          200: '#bbf4da',
+          300: '#88eabf',
+          400: '#4dd89e',
+          500: '#22c081',
+          600: '#169f69',
+          700: '#006a4e', // Bottle Green - trending 2025
+          800: '#0f5a47',
+          900: '#0d4a3a',
+        },
+        
+        pistachio: {
+          50: '#fefce8',
+          100: '#fef9c3',
+          200: '#fef08a',
+          300: '#fde047',
+          400: '#bdb76b', // Pistachio Green - trending 2025
+          500: '#a3a857',
+          600: '#8b8c42',
+          700: '#717232',
+          800: '#5d5c2a',
+          900: '#4f4e26',
+        },
+        
+        clay: {
+          50: '#f7f6f4',
+          100: '#edeae5',
+          200: '#ddd7cd',
+          300: '#c9bfae',
+          400: '#8b7355', // Clay Green - 2025 trending
+          500: '#7a6449',
+          600: '#6a5640',
+          700: '#574836',
+          800: '#4a3e2f',
+          900: '#3f3529',
+        },
+        
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
-        success: '#10b981',
-        warning: '#f59e0b',
-        error: '#ef4444',
-        info: '#3b82f6',
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        
+        // Semantic Colors (2025 Enhanced)
+        success: {
+          50: '#f0fdf5',
+          100: '#dcfce8',
+          200: '#bbf7d1',
+          300: '#86efad',
+          400: '#4ade80',
+          500: '#16a34a', // Enhanced success green
+          600: '#0d7a37',
+          700: '#0a5d2b',
+          800: '#084a23',
+          900: '#07391c',
+        },
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+        },
+        error: {
+          50: '#fef2f2',
+          100: '#fee2e2', 
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
+        },
+        info: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'pulse-green': 'pulseGreen 2s infinite',
-      },
       keyframes: {
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -71,6 +208,13 @@ module.exports = {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
         },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'pulse-green': 'pulseGreen 2s infinite',
       },
     },
   },
