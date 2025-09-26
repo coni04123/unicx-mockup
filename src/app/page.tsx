@@ -9,6 +9,8 @@ import RecentActivity from '@/components/dashboard/RecentActivity';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { PermissionGate } from '@/components/PermissionGate';
+import { usePermissions } from '@/hooks/usePermissions';
 import {
   ChatBubbleLeftRightIcon,
   EyeIcon,
@@ -28,6 +30,7 @@ import {
 
 export default function Dashboard() {
   const t = useTranslations('dashboard');
+  const { roleInfo, isAdmin, isManager, canViewAdvancedMetrics } = usePermissions();
   const metrics = mockDashboardMetrics;
 
   return (
@@ -42,12 +45,17 @@ export default function Dashboard() {
             </p>
           </div>
           <div className="flex items-center space-x-2">
+            <Badge variant={roleInfo.badgeColor} className="text-xs">
+              {roleInfo.label}
+            </Badge>
             <Badge variant="secondary" className="bg-sage-100 text-sage-800">
               {currentTenant.subscriptionPlan}
             </Badge>
-            <Button variant="outline" size="sm">
-              View Reports
-            </Button>
+            <PermissionGate permission="viewAdvancedMetrics">
+              <Button variant="outline" size="sm">
+                View Reports
+              </Button>
+            </PermissionGate>
           </div>
         </div>
 

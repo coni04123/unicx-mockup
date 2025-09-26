@@ -15,9 +15,184 @@ import {
   AdjustmentsHorizontalIcon,
   ChatBubbleLeftRightIcon,
   UsersIcon,
+  PhoneIcon,
+  GlobeAltIcon,
+  ShieldCheckIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { SpyNumber, Group } from '@/types';
 import { mockSpyNumbers, mockGroups } from '@/data/mockData';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PermissionGate } from '@/components/PermissionGate';
+
+// Add Spy Number Modal Component
+function AddSpyNumberModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    phoneNumber: '',
+    displayName: '',
+    description: '',
+    country: '',
+    provider: '',
+    alertThreshold: '24',
+    monitoringGroups: [] as string[],
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would normally send the data to your API
+    console.log('Add Spy Number:', formData);
+    setIsOpen(false);
+    // Reset form
+    setFormData({
+      phoneNumber: '',
+      displayName: '',
+      description: '',
+      country: '',
+      provider: '',
+      alertThreshold: '24',
+      monitoringGroups: [],
+    });
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-primary hover:bg-primary/90">
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Spy Number
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center space-x-2">
+            <PhoneIcon className="h-5 w-5 text-primary" />
+            <span>Add New Spy Number</span>
+          </DialogTitle>
+          <DialogDescription>
+            Configure a new spy number to monitor WhatsApp group activities.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Phone Number */}
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">Phone Number *</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                placeholder="+1-555-0123"
+                value={formData.phoneNumber}
+                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Display Name */}
+            <div className="space-y-2">
+              <Label htmlFor="displayName">Display Name *</Label>
+              <Input
+                id="displayName"
+                placeholder="Marketing Spy"
+                value={formData.displayName}
+                onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Country */}
+            <div className="space-y-2">
+              <Label htmlFor="country">Country</Label>
+              <Input
+                id="country"
+                placeholder="United States"
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+              />
+            </div>
+
+            {/* Provider */}
+            <div className="space-y-2">
+              <Label htmlFor="provider">Provider</Label>
+              <Input
+                id="provider"
+                placeholder="Twilio, WhatsApp Business"
+                value={formData.provider}
+                onChange={(e) => setFormData({ ...formData, provider: e.target.value })}
+              />
+            </div>
+
+            {/* Alert Threshold */}
+            <div className="space-y-2">
+              <Label htmlFor="alertThreshold">Alert Threshold (hours)</Label>
+              <Input
+                id="alertThreshold"
+                type="number"
+                min="1"
+                max="168"
+                value={formData.alertThreshold}
+                onChange={(e) => setFormData({ ...formData, alertThreshold: e.target.value })}
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              placeholder="Describe the purpose of this spy number..."
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+          </div>
+
+          {/* Info Card */}
+          <Card className="border-sage-200 bg-sage-50">
+            <CardContent className="p-4">
+              <div className="flex items-start space-x-3">
+                <InformationCircleIcon className="h-5 w-5 text-sage-600 mt-0.5" />
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-sage-800">
+                    Spy Number Configuration
+                  </p>
+                  <p className="text-xs text-sage-600">
+                    Once added, the spy number will be available for monitoring WhatsApp groups. 
+                    You can configure alert thresholds and assign it to specific groups later.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" className="bg-primary hover:bg-primary/90">
+              Add Spy Number
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 
 interface AlertConfigModalProps {
   spyNumber: SpyNumber;
@@ -242,10 +417,9 @@ export default function SpyNumbersPage() {
             </p>
           </div>
           <div className="mt-4 sm:mt-0">
-            <button className="btn-primary">
-              <PlusIcon className="h-4 w-4 mr-2" />
-              {t('addSpyNumber')}
-            </button>
+            <PermissionGate permission="addSpyNumber">
+              <AddSpyNumberModal />
+            </PermissionGate>
           </div>
         </div>
 
@@ -479,11 +653,10 @@ export default function SpyNumbersPage() {
                   }
                 </p>
                 {!searchQuery && statusFilter === 'all' && (
-                  <div className="mt-6">
-                    <button className="btn-primary">
-                      <PlusIcon className="h-4 w-4 mr-2" />
-                      {t('addSpyNumber')}
-                    </button>
+                  <div className="mt-6 flex justify-center">
+                    <PermissionGate permission="addSpyNumber">
+                      <AddSpyNumberModal />
+                    </PermissionGate>
                   </div>
                 )}
               </div>

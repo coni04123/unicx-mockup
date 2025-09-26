@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from '@/lib/translations';
+import { usePermissions } from '@/hooks/usePermissions';
+import { PermissionGate } from '@/components/PermissionGate';
 import {
   HomeIcon,
   ChatBubbleLeftRightIcon,
@@ -44,6 +46,7 @@ interface NavigationItem {
 export default function Sidebar() {
   const t = useTranslations('navigation');
   const pathname = usePathname();
+  const { canAccessRoute } = usePermissions();
 
   const navigation: NavigationItem[] = [
     {
@@ -148,6 +151,11 @@ export default function Sidebar() {
       <nav className="mt-5 flex-1 px-2 space-y-1">
         {navigation.map((item) => {
           const IconComponent = item.current ? item.iconSolid : item.icon;
+          
+          // Check if user has permission to access this route
+          if (!canAccessRoute(item.href)) {
+            return null;
+          }
           
           return (
             <Link

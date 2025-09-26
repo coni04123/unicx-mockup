@@ -14,9 +14,213 @@ import {
   ClockIcon,
   PhoneIcon,
   BuildingOfficeIcon,
+  ChatBubbleLeftRightIcon,
+  GlobeAltIcon,
+  ShieldCheckIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { WhatsAppAccount } from '@/types';
 import { mockWhatsAppAccounts } from '@/data/mockData';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { PermissionGate } from '@/components/PermissionGate';
+
+// Add WhatsApp Business Account Modal Component
+function AddAccountModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    accountName: '',
+    phoneNumber: '',
+    businessName: '',
+    category: '',
+    description: '',
+    apiKey: '',
+    webhookUrl: '',
+    status: 'pending' as const,
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would normally send the data to your API
+    console.log('Add WhatsApp Account:', formData);
+    setIsOpen(false);
+    // Reset form
+    setFormData({
+      accountName: '',
+      phoneNumber: '',
+      businessName: '',
+      category: '',
+      description: '',
+      apiKey: '',
+      webhookUrl: '',
+      status: 'pending',
+    });
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-primary hover:bg-primary/90">
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Account
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center space-x-2">
+            <ChatBubbleLeftRightIcon className="h-5 w-5 text-primary" />
+            <span>Add WhatsApp Business Account</span>
+          </DialogTitle>
+          <DialogDescription>
+            Connect a new WhatsApp Business account to your platform.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Account Name */}
+            <div className="space-y-2">
+              <Label htmlFor="accountName">Account Name *</Label>
+              <Input
+                id="accountName"
+                placeholder="Marketing Account"
+                value={formData.accountName}
+                onChange={(e) => setFormData({ ...formData, accountName: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-2">
+              <Label htmlFor="businessPhone">Business Phone *</Label>
+              <Input
+                id="businessPhone"
+                type="tel"
+                placeholder="+1-555-0100"
+                value={formData.phoneNumber}
+                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Business Name */}
+            <div className="space-y-2">
+              <Label htmlFor="businessName">Business Name *</Label>
+              <Input
+                id="businessName"
+                placeholder="ACME Corp"
+                value={formData.businessName}
+                onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Category */}
+            <div className="space-y-2">
+              <Label htmlFor="category">Business Category</Label>
+              <Input
+                id="category"
+                placeholder="E-commerce, Service, etc."
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              />
+            </div>
+
+            {/* API Key */}
+            <div className="space-y-2">
+              <Label htmlFor="apiKey">API Key</Label>
+              <Input
+                id="apiKey"
+                type="password"
+                placeholder="Your WhatsApp Business API key"
+                value={formData.apiKey}
+                onChange={(e) => setFormData({ ...formData, apiKey: e.target.value })}
+              />
+            </div>
+
+            {/* Webhook URL */}
+            <div className="space-y-2">
+              <Label htmlFor="webhookUrl">Webhook URL</Label>
+              <Input
+                id="webhookUrl"
+                type="url"
+                placeholder="https://your-app.com/webhook"
+                value={formData.webhookUrl}
+                onChange={(e) => setFormData({ ...formData, webhookUrl: e.target.value })}
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Label htmlFor="accountDescription">Description</Label>
+            <Input
+              id="accountDescription"
+              placeholder="Describe this WhatsApp Business account..."
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+          </div>
+
+          {/* Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="border-primary/20 bg-primary/5">
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-3">
+                  <ShieldCheckIcon className="h-5 w-5 text-primary mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-primary">
+                      Secure Connection
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      All API keys are encrypted and stored securely.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-sage-200 bg-sage-50">
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-3">
+                  <GlobeAltIcon className="h-5 w-5 text-sage-600 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-sage-800">
+                      Global Support
+                    </p>
+                    <p className="text-xs text-sage-600">
+                      Works with WhatsApp Business accounts worldwide.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" className="bg-primary hover:bg-primary/90">
+              Add Account
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export default function WhatsAppAccountsPage() {
   const t = useTranslations('whatsappAccounts');
@@ -121,10 +325,9 @@ export default function WhatsAppAccountsPage() {
             </p>
           </div>
           <div className="mt-4 sm:mt-0">
-            <button className="btn-primary">
-              <PlusIcon className="h-4 w-4 mr-2" />
-              {t('addAccount')}
-            </button>
+            <PermissionGate permission="addWhatsAppAccount">
+              <AddAccountModal />
+            </PermissionGate>
           </div>
         </div>
 
@@ -377,11 +580,10 @@ export default function WhatsAppAccountsPage() {
                   }
                 </p>
                 {!searchQuery && statusFilter === 'all' && typeFilter === 'all' && (
-                  <div className="mt-6">
-                    <button className="btn-primary">
-                      <PlusIcon className="h-4 w-4 mr-2" />
-                      {t('addAccount')}
-                    </button>
+                  <div className="mt-6 flex justify-center">
+                    <PermissionGate permission="addWhatsAppAccount">
+                      <AddAccountModal />
+                    </PermissionGate>
                   </div>
                 )}
               </div>

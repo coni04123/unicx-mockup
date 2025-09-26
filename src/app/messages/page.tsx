@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useTranslations } from '@/lib/translations';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import ChatInterface from '@/components/chat/ChatInterface';
 import {
   ChatBubbleLeftRightIcon,
   MagnifyingGlassIcon,
@@ -26,6 +27,7 @@ export default function MessagesPage() {
   const [statusFilter, setStatusFilter] = useState<MessageStatus>('all');
   const [typeFilter, setTypeFilter] = useState<MessageType>('all');
   const [selectedMessages, setSelectedMessages] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<'list' | 'chat'>('list');
 
   const filteredMessages = mockMessages.filter((message) => {
     const matchesSearch = message.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -119,7 +121,30 @@ export default function MessagesPage() {
               {t('messageHistory')} - {filteredMessages.length} messages
             </p>
           </div>
-          <div className="flex space-x-3">
+          <div className="flex items-center space-x-3">
+            {/* View Mode Toggle */}
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  viewMode === 'list'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                📋 List View
+              </button>
+              <button
+                onClick={() => setViewMode('chat')}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  viewMode === 'chat'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                💬 Chat View
+              </button>
+            </div>
             <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
               <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
               {tCommon('export')}
@@ -127,8 +152,13 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="bg-white shadow rounded-lg">
+        {/* Conditional Content Based on View Mode */}
+        {viewMode === 'chat' ? (
+          <ChatInterface />
+        ) : (
+          <>
+            {/* Filters */}
+            <div className="bg-white shadow rounded-lg">
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               {/* Search */}
@@ -351,6 +381,8 @@ export default function MessagesPage() {
               </div>
             </div>
           </div>
+        )}
+          </>
         )}
       </div>
     </DashboardLayout>

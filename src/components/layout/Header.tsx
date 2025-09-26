@@ -17,6 +17,7 @@ import {
 import { currentUser, currentTenant, mockTenants, mockAlerts } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
+import { usePermissions } from '@/hooks/usePermissions';
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -25,6 +26,7 @@ interface HeaderProps {
 export default function Header({ onMenuClick }: HeaderProps) {
   const t = useTranslations('common');
   const { user, logout } = useAuth();
+  const { roleInfo } = usePermissions();
   const [selectedTenant, setSelectedTenant] = useState(currentTenant);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -246,7 +248,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     {user?.email?.split('@')[0] || 'User'}
                   </p>
                   <div className="flex items-center space-x-2">
-                    <p className="text-xs text-gray-500">{user?.role || 'User'}</p>
+                    <Badge variant={roleInfo.badgeColor} className="text-xs">
+                      {user?.role || 'User'}
+                    </Badge>
                     <Badge variant="outline" className="text-xs">
                       {user?.tenant || 'Unicx'}
                     </Badge>
