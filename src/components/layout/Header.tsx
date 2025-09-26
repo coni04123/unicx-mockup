@@ -15,6 +15,8 @@ import {
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 import { currentUser, currentTenant, mockTenants, mockAlerts } from '@/data/mockData';
+import { useAuth } from '@/contexts/AuthContext';
+import { Badge } from '@/components/ui/badge';
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -22,6 +24,7 @@ interface HeaderProps {
 
 export default function Header({ onMenuClick }: HeaderProps) {
   const t = useTranslations('common');
+  const { user, logout } = useAuth();
   const [selectedTenant, setSelectedTenant] = useState(currentTenant);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -240,9 +243,14 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 )}
                 <div className="ml-3 text-left hidden sm:block">
                   <p className="text-sm font-medium text-gray-900">
-                    {currentUser.firstName} {currentUser.lastName}
+                    {user?.email?.split('@')[0] || 'User'}
                   </p>
-                  <p className="text-xs text-gray-500">{currentUser.role.name}</p>
+                  <div className="flex items-center space-x-2">
+                    <p className="text-xs text-gray-500">{user?.role || 'User'}</p>
+                    <Badge variant="outline" className="text-xs">
+                      {user?.tenant || 'Unicx'}
+                    </Badge>
+                  </div>
                 </div>
                 <ChevronDownIcon className="h-4 w-4 ml-2 text-gray-400" />
               </Menu.Button>
@@ -285,6 +293,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   <Menu.Item>
                     {({ active }) => (
                       <button
+                        onClick={logout}
                         className={`${
                           active ? 'bg-gray-100' : ''
                         } flex items-center w-full text-left px-4 py-2 text-sm text-gray-700`}

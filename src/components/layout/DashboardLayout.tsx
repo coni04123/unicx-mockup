@@ -3,12 +3,23 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { useAuth } from '@/contexts/AuthContext';
+import LoadingScreen from '@/components/LoadingScreen';
 
 interface DashboardLayoutProps extends React.PropsWithChildren {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  const { isLoading, isAuthenticated } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return null; // AuthProvider will handle redirect
+  }
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-50">
