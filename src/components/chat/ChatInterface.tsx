@@ -94,12 +94,12 @@ export default function ChatInterface() {
       {/* Left Sidebar - Agents */}
       <div className="w-80 border-r border-border flex flex-col bg-gray-50">
         <div className="p-4 border-b border-border">
-          <h3 className="text-lg font-semibold text-foreground mb-3">Agentes</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-3">Agents</h3>
           <div className="relative">
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Pesquisar"
+              placeholder="Search"
               value={contactSearch}
               onChange={(e) => setContactSearch(e.target.value)}
               className="pl-10"
@@ -136,12 +136,12 @@ export default function ChatInterface() {
       {/* Middle - Conversations */}
       <div className="w-96 border-r border-border flex flex-col">
         <div className="p-4 border-b border-border">
-          <h3 className="text-lg font-semibold text-foreground mb-3">Conversas</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-3">Conversations</h3>
           <div className="relative">
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Pesquisar"
+              placeholder="Search"
               value={conversationSearch}
               onChange={(e) => setConversationSearch(e.target.value)}
               className="pl-10"
@@ -284,7 +284,7 @@ export default function ChatInterface() {
                 <div className="flex-1 relative">
                   <Input
                     type="text"
-                    placeholder="Digite uma mensagem..."
+                    placeholder="Type a message..."
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -317,10 +317,10 @@ export default function ChatInterface() {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-foreground mb-2">
-                Selecione uma conversa
+                Select a conversation
               </h3>
               <p className="text-muted-foreground">
-                Escolha uma conversa da lista para começar a enviar mensagens.
+                Choose a conversation from the list to start messaging.
               </p>
             </div>
           </div>
