@@ -3,6 +3,9 @@
 import React from 'react';
 import { useTranslations } from '@/lib/translations';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import OnboardingFlow from '@/components/onboarding/OnboardingFlow';
+import WelcomeBanner from '@/components/onboarding/WelcomeBanner';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import MetricCard from '@/components/dashboard/MetricCard';
 import AlertCard from '@/components/dashboard/AlertCard';
 import RecentActivity from '@/components/dashboard/RecentActivity';
@@ -30,12 +33,24 @@ import {
 
 export default function Dashboard() {
   const t = useTranslations('dashboard');
+  const { shouldShowOnboarding, completeOnboarding, skipOnboarding, resetOnboarding } = useOnboarding();
   const { roleInfo, canViewAdvancedMetrics } = usePermissions();
   const metrics = mockDashboardMetrics;
 
   return (
     <DashboardLayout>
+      {/* Onboarding Flow */}
+      {/* {shouldShowOnboarding && (
+        <OnboardingFlow
+          onClose={skipOnboarding}
+          onComplete={completeOnboarding}
+        />
+      )} */}
+      
       <div className="space-y-6">
+        {/* Welcome Banner for users who haven't completed onboarding */}
+        {/* <WelcomeBanner /> */}
+        
         {/* Page header */}
         <div className="flex items-center justify-between">
           <div>
@@ -165,7 +180,7 @@ export default function Dashboard() {
             <h3 className="text-lg font-medium text-gray-900">Quick Actions</h3>
           </div>
           <div className="card-body">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <button className="flex items-center p-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors">
                 <BuildingOfficeIcon className="h-5 w-5 text-primary-600 mr-3" />
                 <span className="text-sm font-medium text-gray-900">Add Entity</span>
@@ -177,6 +192,13 @@ export default function Dashboard() {
               <button className="flex items-center p-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors">
                 <EnvelopeIcon className="h-5 w-5 text-green-600 mr-3" />
                 <span className="text-sm font-medium text-gray-900">Monitor Messages</span>
+              </button>
+              <button 
+                onClick={resetOnboarding}
+                className="flex items-center p-3 rounded-md border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors"
+              >
+                <span className="text-blue-600 mr-3">🚀</span>
+                <span className="text-sm font-medium text-blue-900">Setup Guide</span>
               </button>
             </div>
           </div>

@@ -94,5 +94,38 @@
     "open": "Open",
     "acknowledged": "Acknowledged",
     "resolved": "Resolved"
+  },
+  "onboarding": {
+    "welcome": "Welcome to 2N5!",
+    "subtitle": "Let's get your WhatsApp monitoring system set up",
+    "step1": {
+      "title": "Create Entity Structure",
+      "description": "Set up your organizational hierarchy",
+      "entityName": "Entity Name",
+      "companyName": "Company Name",
+      "departmentName": "Department Name"
+    },
+    "step2": {
+      "title": "Add E164 Users",
+      "description": "Add team members to monitor",
+      "addUser": "Add Another User",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "e164Number": "E164 Number",
+      "role": "Role"
+    },
+    "step3": {
+      "title": "Send QR Invitations",
+      "description": "Invite users to connect WhatsApp",
+      "sendInvitations": "Send QR code invitations to all users",
+      "invitationMessage": "Invitation Message"
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "complete": "Complete Setup",
+      "skip": "Skip for now",
+      "startGuide": "Start Setup Guide"
+    }
   }
 }

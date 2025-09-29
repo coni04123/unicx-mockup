@@ -30,6 +30,19 @@ export default function CommunicationPage() {
   });
   const [showWhatsAppFilters, setShowWhatsAppFilters] = useState(false);
 
+  // Additional state for enhanced filtering
+  const [allE164Numbers, setAllE164Numbers] = useState<Set<string>>(new Set());
+
+  // Extract all unique E164 numbers from messages (registered and unregistered)
+  React.useEffect(() => {
+    const numbersSet = new Set<string>();
+    whatsappMessages.forEach(message => {
+      numbersSet.add(message.senderE164);
+      numbersSet.add(message.receiverE164);
+    });
+    setAllE164Numbers(numbersSet);
+  }, []);
+
   // Elastic structure navigation state
   const [selectedEntityPath, setSelectedEntityPath] = useState<string>('');
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(['entity-x']));
@@ -107,27 +120,40 @@ export default function CommunicationPage() {
         message.entityPath.startsWith(pathToMatch + ' >')
       ));
 
-    // Any E164 Number filter
+    // Enhanced E164 Number filter (supports registered and unregistered numbers)
     const matchesE164 = !whatsappFilters.e164Number || 
       message.senderE164.includes(whatsappFilters.e164Number) || 
       message.receiverE164.includes(whatsappFilters.e164Number);
 
-    // Time range filter
+    // Enhanced Time range filter with support for date ranges
     let matchesTimeRange = true;
     if (whatsappFilters.timeRange) {
+      const msgDate = new Date(message.timestamp);
       const now = new Date();
-      let startDate: Date;
 
       if (whatsappFilters.timeRange.type === 'last_hours' && whatsappFilters.timeRange.value) {
-        startDate = new Date(now.getTime() - (whatsappFilters.timeRange.value * 60 * 60 * 1000));
+        const startDate = new Date(now.getTime() - (whatsappFilters.timeRange.value * 60 * 60 * 1000));
+        matchesTimeRange = msgDate >= startDate;
       } else if (whatsappFilters.timeRange.type === 'last_days' && whatsappFilters.timeRange.value) {
-        startDate = new Date(now.getTime() - (whatsappFilters.timeRange.value * 24 * 60 * 60 * 1000));
-      } else {
-        startDate = new Date(0);
+        const startDate = new Date(now.getTime() - (whatsappFilters.timeRange.value * 24 * 60 * 60 * 1000));
+        matchesTimeRange = msgDate >= startDate;
+      } else if (whatsappFilters.timeRange.type === 'date_range') {
+        let startMatches = true;
+        let endMatches = true;
+        
+        if (whatsappFilters.timeRange.startDate) {
+          const startDate = new Date(whatsappFilters.timeRange.startDate);
+          startMatches = msgDate >= startDate;
+        }
+        
+        if (whatsappFilters.timeRange.endDate) {
+          const endDate = new Date(whatsappFilters.timeRange.endDate);
+          endDate.setHours(23, 59, 59, 999); // Include the entire end date
+          endMatches = msgDate <= endDate;
+        }
+        
+        matchesTimeRange = startMatches && endMatches;
       }
-
-      const msgDate = new Date(message.timestamp);
-      matchesTimeRange = msgDate >= startDate;
     }
 
     // Message type filter
@@ -140,8 +166,23 @@ export default function CommunicationPage() {
       whatsappFilters.direction === 'both' || 
       message.direction === whatsappFilters.direction;
 
+    // Registration status filter
+    let matchesRegistration = true;
+    if (whatsappFilters.registrationStatus && whatsappFilters.registrationStatus !== 'all') {
+      const senderUser = e164Users.find(u => u.e164Number === message.senderE164);
+      const receiverUser = e164Users.find(u => u.e164Number === message.receiverE164);
+      
+      if (whatsappFilters.registrationStatus === 'registered') {
+        matchesRegistration = senderUser !== undefined || receiverUser !== undefined;
+      } else {
+        // Filter by specific registration status
+        matchesRegistration = Boolean((senderUser && senderUser.registrationStatus === whatsappFilters.registrationStatus) ||
+                                     (receiverUser && receiverUser.registrationStatus === whatsappFilters.registrationStatus));
+      }
+    }
+
     return matchesEntityUser && matchesEntityPath && 
-           matchesE164 && matchesTimeRange && matchesType && matchesDirection;
+           matchesE164 && matchesTimeRange && matchesType && matchesDirection && matchesRegistration;
   }).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   // Render elastic structure tree
@@ -334,7 +375,26 @@ export default function CommunicationPage() {
           <div className="flex-1 min-w-0 space-y-6">
             {showWhatsAppFilters && (
               <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">WhatsApp Advanced Filters</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">WhatsApp Advanced Filters</h3>
+                  <button
+                    onClick={() => {
+                      setWhatsappFilters({
+                        entityUserNumber: '',
+                        entityPath: '',
+                        e164Number: '',
+                        timeRange: { type: 'last_days', value: 0 },
+                        messageType: 'all',
+                        direction: 'both',
+                        registrationStatus: 'all'
+                      });
+                      setSelectedEntityPath('');
+                    }}
+                    className="text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {/* Entity User Number Filter */}
                   <div>
@@ -391,21 +451,20 @@ export default function CommunicationPage() {
                   {/* <div>
                   </div> */}
 
-                  {/* Any E164 Number Filter */}
+                  {/* Enhanced E164 Number Filter */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Any E164 Number
                     </label>
                     <input
-                      type="text"
                       value={whatsappFilters.e164Number || ''}
+                      placeholder='Enter E164 Number'
                       onChange={(e) => setWhatsappFilters(prev => ({ ...prev, e164Number: e.target.value }))}
-                      placeholder="+1415555..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
 
-                  {/* Time Range Filter */}
+                  {/* Enhanced Time Range Filter */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Time Period
@@ -415,23 +474,59 @@ export default function CommunicationPage() {
                         value={whatsappFilters.timeRange?.type || 'last_days'}
                         onChange={(e) => setWhatsappFilters(prev => ({ 
                           ...prev, 
-                          timeRange: { ...prev.timeRange!, type: e.target.value as any }
+                          timeRange: { 
+                            type: e.target.value as any,
+                            value: e.target.value === 'date_range' ? undefined : prev.timeRange?.value,
+                            startDate: e.target.value === 'date_range' ? prev.timeRange?.startDate : undefined,
+                            endDate: e.target.value === 'date_range' ? prev.timeRange?.endDate : undefined
+                          }
                         }))}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                       >
                         <option value="last_hours">Last Hours</option>
                         <option value="last_days">Last Days</option>
+                        <option value="date_range">Custom Date Range</option>
                       </select>
-                      <input
-                        type="number"
-                        value={whatsappFilters.timeRange?.value || ''}
-                        onChange={(e) => setWhatsappFilters(prev => ({ 
-                          ...prev, 
-                          timeRange: { ...prev.timeRange!, value: parseInt(e.target.value) }
-                        }))}
-                        placeholder="Enter number"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      />
+                      
+                      {whatsappFilters.timeRange?.type === 'date_range' ? (
+                        <div className="space-y-2">
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">From Date</label>
+                            <input
+                              type="date"
+                              value={whatsappFilters.timeRange?.startDate || ''}
+                              onChange={(e) => setWhatsappFilters(prev => ({ 
+                                ...prev, 
+                                timeRange: { ...prev.timeRange!, startDate: e.target.value }
+                              }))}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-600 mb-1">To Date</label>
+                            <input
+                              type="date"
+                              value={whatsappFilters.timeRange?.endDate || ''}
+                              onChange={(e) => setWhatsappFilters(prev => ({ 
+                                ...prev, 
+                                timeRange: { ...prev.timeRange!, endDate: e.target.value }
+                              }))}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <input
+                          type="number"
+                          value={whatsappFilters.timeRange?.value || ''}
+                          onChange={(e) => setWhatsappFilters(prev => ({ 
+                            ...prev, 
+                            timeRange: { ...prev.timeRange!, value: parseInt(e.target.value) || 0 }
+                          }))}
+                          placeholder={whatsappFilters.timeRange?.type === 'last_hours' ? 'Enter hours' : 'Enter days'}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      )}
                     </div>
                   </div>
 
@@ -467,7 +562,29 @@ export default function CommunicationPage() {
                       <option value="audio">Audio</option>
                       <option value="video">Video</option>
                       <option value="document">Document</option>
+                      <option value="file">File</option>
                     </select>
+                  </div>
+
+                  {/* Registration Status Filter */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Registration Status
+                    </label>
+                    <select
+                      value={whatsappFilters.registrationStatus || 'all'}
+                      onChange={(e) => setWhatsappFilters(prev => ({ ...prev, registrationStatus: e.target.value as any }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      <option value="all">All Users</option>
+                      <option value="registered">Any Registered User</option>
+                      <option value="pending">Pending Registration</option>
+                      <option value="invited">Invited Users</option>
+                      <option value="cancelled">Cancelled Registration</option>
+                    </select>
+                    <div className="mt-1 text-xs text-gray-500">
+                      Filter by registration status of message participants
+                    </div>
                   </div>
                 </div>
               </div>
