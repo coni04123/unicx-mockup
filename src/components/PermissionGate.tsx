@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { usePermissions } from '@/hooks/usePermissions';
-import { Permission } from '@/lib/permissions';
+import { Permission, UserRole } from '@/lib/permissions';
 
 interface PermissionGateProps {
   permission?: keyof Permission;
-  role?: 'Admin' | 'Manager' | 'User' | Array<'Admin' | 'Manager' | 'User'>;
+  role?: UserRole | UserRole[];
   fallback?: React.ReactNode;
   children: React.ReactNode;
 }
@@ -36,17 +36,17 @@ export function PermissionGate({
 }
 
 // Convenience components for common use cases
-export function AdminOnly({ children, fallback = null }: { children: React.ReactNode; fallback?: React.ReactNode }) {
+export function SystemAdminOnly({ children, fallback = null }: { children: React.ReactNode; fallback?: React.ReactNode }) {
   return (
-    <PermissionGate role="Admin" fallback={fallback}>
+    <PermissionGate role="SystemAdmin" fallback={fallback}>
       {children}
     </PermissionGate>
   );
 }
 
-export function ManagerOrAdmin({ children, fallback = null }: { children: React.ReactNode; fallback?: React.ReactNode }) {
+export function TenantAdminOrSystemAdmin({ children, fallback = null }: { children: React.ReactNode; fallback?: React.ReactNode }) {
   return (
-    <PermissionGate role={['Admin', 'Manager']} fallback={fallback}>
+    <PermissionGate role={['SystemAdmin', 'TenantAdmin']} fallback={fallback}>
       {children}
     </PermissionGate>
   );

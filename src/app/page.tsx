@@ -30,7 +30,7 @@ import {
 
 export default function Dashboard() {
   const t = useTranslations('dashboard');
-  const { roleInfo, isAdmin, isManager, canViewAdvancedMetrics } = usePermissions();
+  const { roleInfo, canViewAdvancedMetrics } = usePermissions();
   const metrics = mockDashboardMetrics;
 
   return (

@@ -32,6 +32,7 @@
     "dashboard": "Dashboard",
     "entities": "Entities",
     "communication": "Communication",
+    "communications": "Communications",
     "settings": "Settings",
     "logout": "Logout"
   },

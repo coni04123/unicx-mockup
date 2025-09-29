@@ -46,7 +46,12 @@ export interface Permission {
   manageSubTenantUsers: boolean;
   monitorSubTenantMessages: boolean;
   
-  
+  // Alert and monitoring permissions
+  viewAlerts: boolean;
+  acknowledgeAlerts: boolean;
+  configureAlerts: boolean;
+  viewSystemHealth: boolean;
+
   // Administration permissions
   viewAdministration: boolean;
   manageUsers: boolean;
@@ -101,6 +106,12 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     manageSubTenantUsers: true,
     monitorSubTenantMessages: true,
     
+    // Alert and monitoring
+    viewAlerts: true,
+    acknowledgeAlerts: true,
+    configureAlerts: true,
+    viewSystemHealth: true,
+    
     // Administration
     viewAdministration: true,
     manageUsers: true,
@@ -152,6 +163,12 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteSubTenant: true,
     manageSubTenantUsers: true,
     monitorSubTenantMessages: true,
+    
+    // Alert and monitoring (tenant-specific)
+    viewAlerts: true,
+    acknowledgeAlerts: true,
+    configureAlerts: true,
+    viewSystemHealth: false, // Cannot view system-wide health
     
     // Administration (limited to tenant management)
     viewAdministration: true,
