@@ -1,4 +1,4 @@
-# Unicx - WhatsApp Business Management Platform
+# 2N5 - WhatsApp Business Management Platform
 
 A comprehensive Next.js application for managing WhatsApp Business accounts, spy numbers, and messaging campaigns with multi-tenant support.
 
@@ -45,7 +45,7 @@ Comprehensive mockup data includes:
 
 1. **Clone or navigate to the project directory**:
    ```bash
-   cd D:\Projects\Unicx\unicx-mockup
+   cd D:\Projects\2N5\2n5-mockup
    ```
 
 2. **Install dependencies**:
@@ -73,9 +73,8 @@ Comprehensive mockup data includes:
 2. **WhatsApp Accounts** (`/whatsapp-accounts`) - Account management
 3. **Spy Numbers** (`/spy-numbers`) - Surveillance configuration
 4. **Entities** (`/entities`) - Hierarchical entity management
-5. **Campaigns** (`/campaigns`) - Messaging campaigns
-6. **Monitoring** (`/monitoring`) - System observability
-7. **Administration** (`/administration`) - User and role management
+5. **Messages** (`/messages`) - WhatsApp message monitoring
+6. **Administration** (`/administration`) - User and role management
 
 ### Key Components
 
@@ -113,13 +112,13 @@ Comprehensive mockup data includes:
 - Identifier support (E164, CPF, CNPJ, custom)
 - Parent-child relationships
 
-### Campaign Management
-- Campaign status tracking (draft, scheduled, running, completed)
-- Progress monitoring with delivery rates
-- Target selection (entities, groups, custom lists)
-- Template-based messaging
+### Message Management
+- WhatsApp message monitoring and filtering
+- Entity-based message organization
+- Real-time message tracking
+- Advanced search and filtering capabilities
 
-### Monitoring & Observability
+### System Administration
 - System health indicators
 - Performance charts and metrics
 - Resource usage monitoring (CPU, memory, disk)

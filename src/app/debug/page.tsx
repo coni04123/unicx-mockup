@@ -10,9 +10,9 @@ export default function DebugPage() {
 
   const testLogin = () => {
     login({
-      email: 'admin@unicx.com',
+      email: 'admin@2n5.com',
       role: 'Admin',
-      tenant: 'Unicx Global'
+      tenant: '2N5 Global'
     });
   };
 

@@ -127,7 +127,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search accounts, campaigns, messages..."
+                  placeholder="Search accounts, messages, entities..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
@@ -217,7 +217,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     {unreadAlerts.length > 5 && (
                       <div className="mt-4 text-center">
                         <a
-                          href="/monitoring"
+                          href="/messages"
                           className="text-sm text-primary-600 hover:text-primary-500"
                         >
                           View all notifications
@@ -252,7 +252,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                       {user?.role || 'User'}
                     </Badge>
                     <Badge variant="outline" className="text-xs">
-                      {user?.tenant || 'Unicx'}
+                      {user?.tenant || '2N5'}
                     </Badge>
                   </div>
                 </div>

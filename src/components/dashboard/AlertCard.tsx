@@ -146,7 +146,7 @@ export default function AlertCard({ alerts, maxDisplay = 5 }: AlertCardProps) {
         {openAlerts.length > maxDisplay && (
           <div className="px-4 py-3 bg-muted/50 text-center border-t border-border">
             <Button variant="ghost" size="sm" asChild>
-              <a href="/monitoring">
+              <a href="/messages">
                 View all {openAlerts.length} alerts
               </a>
             </Button>

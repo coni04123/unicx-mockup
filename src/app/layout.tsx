@@ -3,10 +3,10 @@ import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 
 export const metadata: Metadata = {
-  title: 'Unicx - WhatsApp Business Management Platform',
+  title: '2N5 - WhatsApp Business Management Platform',
   description: 'Comprehensive WhatsApp Business and spy number management system with multi-tenant support',
-  keywords: 'WhatsApp, Business, Messaging, Campaigns, Spy Numbers, Multi-tenant',
-  authors: [{ name: 'Unicx Team' }],
+  keywords: 'WhatsApp, Business, Messaging, Spy Numbers, Multi-tenant',
+  authors: [{ name: '2N5 Team' }],
 };
 
 export const viewport = {

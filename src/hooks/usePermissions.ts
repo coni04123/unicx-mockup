@@ -22,18 +22,18 @@ export function usePermissions() {
     role: userRole,
     
     // Helper functions for common checks
-    isAdmin: userRole === 'Admin',
-    isManager: userRole === 'Manager',
-    isUser: userRole === 'User',
+    isSystemAdmin: userRole === 'SystemAdmin',
+    isTenantAdmin: userRole === 'TenantAdmin',
+    isE164User: userRole === 'User',
     
     // Quick permission checks
     canManageUsers: hasPermission(userRole, 'manageUsers'),
     canAddAccounts: hasPermission(userRole, 'addWhatsAppAccount'),
     canAddSpyNumbers: hasPermission(userRole, 'addSpyNumber'),
-    canCreateCampaigns: hasPermission(userRole, 'createCampaign'),
     canAccessAdmin: hasPermission(userRole, 'viewAdministration'),
     canViewAdvancedMetrics: hasPermission(userRole, 'viewAdvancedMetrics'),
     canExportData: hasPermission(userRole, 'exportMessages'),
-    canConfigureAlerts: hasPermission(userRole, 'configureAlerts'),
+    canManageSubTenants: hasPermission(userRole, 'manageSubTenantUsers'),
+    canMonitorE164Messages: hasPermission(userRole, 'monitorSubTenantMessages'),
   };
 }

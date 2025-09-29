@@ -59,32 +59,21 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Metrics grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Main Metrics */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <MetricCard
-            title="WhatsApp Accounts"
-            value={metrics.whatsappAccounts.total}
+            title="Total Entities"
+            value={metrics.entities.total}
             change={{
-              value: 5.2,
+              value: 8.3,
               period: 'from last month',
               type: 'increase',
             }}
-            icon={ChatBubbleLeftRightIcon}
+            icon={BuildingOfficeIcon}
             iconColor="bg-primary-500"
           />
           <MetricCard
-            title="Active Spy Numbers"
-            value={metrics.spyNumbers.active}
-            change={{
-              value: 0,
-              period: 'from last month',
-              type: 'neutral',
-            }}
-            icon={EyeIcon}
-            iconColor="bg-accent-500"
-          />
-          <MetricCard
-            title="Messages (24h)"
+            title="WhatsApp Messages"
             value={metrics.messages.sent24h.toLocaleString()}
             change={{
               value: 12.5,
@@ -92,162 +81,103 @@ export default function Dashboard() {
               type: 'increase',
             }}
             icon={EnvelopeIcon}
-            iconColor="bg-blue-500"
-          />
-          <MetricCard
-            title="Active Campaigns"
-            value={metrics.campaigns.active}
-            change={{
-              value: 0,
-              period: 'from yesterday',
-              type: 'neutral',
-            }}
-            icon={MegaphoneIcon}
-            iconColor="bg-purple-500"
-          />
-        </div>
-
-        {/* Secondary metrics */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <MetricCard
-            title="Delivery Rate"
-            value={metrics.messages.deliveryRate}
-            suffix="%"
-            change={{
-              value: 2.1,
-              period: 'from yesterday',
-              type: 'increase',
-            }}
-            icon={ChartBarIcon}
             iconColor="bg-green-500"
           />
           <MetricCard
-            title="Groups Monitored"
-            value={metrics.spyNumbers.groupsMonitored}
+            title="Monitored Users"
+            value="47"
+            change={{
+              value: 15.2,
+              period: 'from last week',
+              type: 'increase',
+            }}
             icon={UsersIcon}
-            iconColor="bg-indigo-500"
-          />
-          <MetricCard
-            title="Total Entities"
-            value={metrics.entities.total}
-            icon={BuildingOfficeIcon}
-            iconColor="bg-yellow-500"
-          />
-          <MetricCard
-            title="Open Alerts"
-            value={metrics.alerts.open}
-            icon={ExclamationTriangleIcon}
-            iconColor={metrics.alerts.critical > 0 ? "bg-red-500" : "bg-gray-400"}
+            iconColor="bg-blue-500"
           />
         </div>
 
-        {/* Health status cards */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-          {/* WhatsApp Accounts Health */}
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+          {/* Entity Overview */}
           <div className="card">
             <div className="card-header">
-              <h3 className="text-lg font-medium text-gray-900">WhatsApp Accounts Health</h3>
+              <h3 className="text-lg font-medium text-gray-900">Entity Overview</h3>
             </div>
             <div className="card-body">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Healthy</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-green-400 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-gray-900">
-                      {metrics.whatsappAccounts.health.healthy}
-                    </span>
-                  </div>
+                  <span className="text-sm text-gray-600">Companies</span>
+                  <span className="text-sm font-medium text-gray-900">3</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Warning</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-yellow-400 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-gray-900">
-                      {metrics.whatsappAccounts.health.warning}
-                    </span>
-                  </div>
+                  <span className="text-sm text-gray-600">Departments</span>
+                  <span className="text-sm font-medium text-gray-900">12</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Critical</span>
-                  <div className="flex items-center">
-                    <div className="h-2 w-2 bg-red-400 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-gray-900">
-                      {metrics.whatsappAccounts.health.critical}
-                    </span>
-                  </div>
+                  <span className="text-sm text-gray-600">E164 Users</span>
+                  <span className="text-sm font-medium text-green-600">47</span>
+                </div>
+                <div className="flex items-center justify-between border-t pt-3">
+                  <span className="text-sm font-medium text-gray-900">Registration Rate</span>
+                  <span className="text-sm font-bold text-primary-600">89%</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Message Statistics */}
+          {/* Communication Overview */}
           <div className="card">
             <div className="card-header">
-              <h3 className="text-lg font-medium text-gray-900">Message Statistics (24h)</h3>
+              <h3 className="text-lg font-medium text-gray-900">Communication Overview</h3>
             </div>
             <div className="card-body">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Sent</span>
+                  <span className="text-sm text-gray-600">Messages (24h)</span>
                   <span className="text-sm font-medium text-gray-900">
                     {metrics.messages.sent24h.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Delivered</span>
+                  <span className="text-sm text-gray-600">Monitored</span>
                   <span className="text-sm font-medium text-green-600">
-                    {metrics.messages.delivered24h.toLocaleString()}
+                    {Math.round(metrics.messages.sent24h * 0.73).toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Failed</span>
-                  <span className="text-sm font-medium text-red-600">
-                    {metrics.messages.failed24h.toLocaleString()}
+                  <span className="text-sm text-gray-600">External</span>
+                  <span className="text-sm font-medium text-orange-600">
+                    {Math.round(metrics.messages.sent24h * 0.27).toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between border-t pt-3">
-                  <span className="text-sm font-medium text-gray-900">Delivery Rate</span>
-                  <span className="text-sm font-bold text-primary-600">
-                    {metrics.messages.deliveryRate}%
-                  </span>
+                  <span className="text-sm font-medium text-gray-900">Active Conversations</span>
+                  <span className="text-sm font-bold text-primary-600">156</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Quick Actions */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-lg font-medium text-gray-900">Quick Actions</h3>
-            </div>
-            <div className="card-body">
-              <div className="space-y-3">
-                <button className="w-full text-left p-2 rounded-md hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center">
-                    <ChatBubbleLeftRightIcon className="h-5 w-5 text-primary-600 mr-3" />
-                    <span className="text-sm font-medium text-gray-900">Add WhatsApp Account</span>
-                  </div>
-                </button>
-                <button className="w-full text-left p-2 rounded-md hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center">
-                    <MegaphoneIcon className="h-5 w-5 text-purple-600 mr-3" />
-                    <span className="text-sm font-medium text-gray-900">Create Campaign</span>
-                  </div>
-                </button>
-                <button className="w-full text-left p-2 rounded-md hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center">
-                    <EyeIcon className="h-5 w-5 text-accent-600 mr-3" />
-                    <span className="text-sm font-medium text-gray-900">Configure Spy Number</span>
-                  </div>
-                </button>
-                <button className="w-full text-left p-2 rounded-md hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center">
-                    <BuildingOfficeIcon className="h-5 w-5 text-yellow-600 mr-3" />
-                    <span className="text-sm font-medium text-gray-900">Add Entity</span>
-                  </div>
-                </button>
-              </div>
+        {/* Quick Actions */}
+        <div className="card">
+          <div className="card-header">
+            <h3 className="text-lg font-medium text-gray-900">Quick Actions</h3>
+          </div>
+          <div className="card-body">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <button className="flex items-center p-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors">
+                <BuildingOfficeIcon className="h-5 w-5 text-primary-600 mr-3" />
+                <span className="text-sm font-medium text-gray-900">Add Entity</span>
+              </button>
+              <button className="flex items-center p-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors">
+                <UsersIcon className="h-5 w-5 text-blue-600 mr-3" />
+                <span className="text-sm font-medium text-gray-900">Create E164 User</span>
+              </button>
+              <button className="flex items-center p-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors">
+                <EnvelopeIcon className="h-5 w-5 text-green-600 mr-3" />
+                <span className="text-sm font-medium text-gray-900">Monitor Messages</span>
+              </button>
             </div>
           </div>
         </div>

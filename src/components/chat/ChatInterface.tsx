@@ -3,13 +3,6 @@
 import React, { useState } from 'react';
 import { 
   MagnifyingGlassIcon,
-  PaperAirplaneIcon,
-  PaperClipIcon,
-  EllipsisVerticalIcon,
-  PhoneIcon,
-  VideoCameraIcon,
-  FaceSmileIcon,
-  MicrophoneIcon,
 } from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -53,7 +46,6 @@ const mockMessages = chatMessages;
 
 export default function ChatInterface() {
   const [selectedConversationId, setSelectedConversationId] = useState<string>('1');
-  const [messageInput, setMessageInput] = useState('');
   const [contactSearch, setContactSearch] = useState('');
   const [conversationSearch, setConversationSearch] = useState('');
 
@@ -74,13 +66,6 @@ export default function ChatInterface() {
            conv.lastMessage.toLowerCase().includes(conversationSearch.toLowerCase());
   });
 
-  const handleSendMessage = () => {
-    if (messageInput.trim()) {
-      // In real app, would send message via API
-      console.log('Sending message:', messageInput);
-      setMessageInput('');
-    }
-  };
 
   const getInitials = (name: string, contact?: any) => {
     if (contact && contact.initials) {
@@ -210,35 +195,17 @@ export default function ChatInterface() {
           <>
             {/* Chat Header */}
             <div className="p-4 border-b border-border bg-gray-50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="relative">
-                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
-                      {getInitials(selectedContact.name, selectedContact)}
-                    </div>
-                    {selectedContact.isOnline && (
-                      <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                    )}
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-semibold text-foreground">
-                      {selectedContact.name}
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      {selectedContact.isOnline ? 'online' : selectedContact.lastSeen}
-                    </p>
-                  </div>
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                  {getInitials(selectedContact.name, selectedContact)}
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm">
-                    <PhoneIcon className="h-5 w-5" />
-                  </Button>
-                  <Button variant="ghost" size="sm">
-                    <VideoCameraIcon className="h-5 w-5" />
-                  </Button>
-                  <Button variant="ghost" size="sm">
-                    <EllipsisVerticalIcon className="h-5 w-5" />
-                  </Button>
+                <div className="ml-3">
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {selectedContact.name}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {selectedContact.phone}
+                  </p>
                 </div>
               </div>
             </div>
@@ -275,38 +242,6 @@ export default function ChatInterface() {
               ))}
             </div>
 
-            {/* Message Input */}
-            <div className="p-4 border-t border-border bg-white">
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm">
-                  <PaperClipIcon className="h-5 w-5" />
-                </Button>
-                <div className="flex-1 relative">
-                  <Input
-                    type="text"
-                    placeholder="Type a message..."
-                    value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                    className="pr-20"
-                  />
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                    <Button variant="ghost" size="sm">
-                      <FaceSmileIcon className="h-4 w-4" />
-                    </Button>
-                    {messageInput.trim() ? (
-                      <Button size="sm" onClick={handleSendMessage}>
-                        <PaperAirplaneIcon className="h-4 w-4" />
-                      </Button>
-                    ) : (
-                      <Button variant="ghost" size="sm">
-                        <MicrophoneIcon className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
           </>
         ) : (
           <div className="flex-1 flex items-center justify-center bg-gray-50">

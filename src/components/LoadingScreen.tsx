@@ -23,7 +23,7 @@ export default function LoadingScreen() {
 
         {/* Loading text */}
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-foreground">Unicx</h2>
+          <h2 className="text-2xl font-bold text-foreground">2N5</h2>
           <p className="text-muted-foreground">Loading your workspace...</p>
         </div>
 

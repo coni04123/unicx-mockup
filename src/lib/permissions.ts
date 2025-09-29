@@ -1,9 +1,9 @@
 /**
  * Role-Based Access Control (RBAC) System
- * Defines permissions for different user roles in the Unicx platform
+ * Defines permissions for different user roles in the 2N5 platform
  */
 
-export type UserRole = 'Admin' | 'Manager' | 'User';
+export type UserRole = 'SystemAdmin' | 'TenantAdmin' | 'User';
 
 export interface Permission {
   // Dashboard permissions
@@ -24,13 +24,6 @@ export interface Permission {
   deleteSpyNumber: boolean;
   configureSpyNumber: boolean;
   
-  // Campaigns permissions
-  viewCampaigns: boolean;
-  createCampaign: boolean;
-  editCampaign: boolean;
-  deleteCampaign: boolean;
-  launchCampaign: boolean;
-  viewCampaignAnalytics: boolean;
   
   // Messages permissions
   viewMessages: boolean;
@@ -45,12 +38,14 @@ export interface Permission {
   deleteEntity: boolean;
   manageEntityHierarchy: boolean;
   
-  // Monitoring permissions
-  viewMonitoring: boolean;
-  viewAlerts: boolean;
-  acknowledgeAlerts: boolean;
-  configureAlerts: boolean;
-  viewSystemHealth: boolean;
+  // Sub-tenant management permissions
+  viewSubTenants: boolean;
+  createSubTenant: boolean;
+  editSubTenant: boolean;
+  deleteSubTenant: boolean;
+  manageSubTenantUsers: boolean;
+  monitorSubTenantMessages: boolean;
+  
   
   // Administration permissions
   viewAdministration: boolean;
@@ -64,8 +59,8 @@ export interface Permission {
 
 // Define permissions for each role
 export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
-  // Admin: Full access to everything across all tenants
-  Admin: {
+  // SystemAdmin: Full access to everything across all tenants and system management
+  SystemAdmin: {
     // Dashboard
     viewDashboard: true,
     viewAdvancedMetrics: true,
@@ -84,13 +79,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteSpyNumber: true,
     configureSpyNumber: true,
     
-    // Campaigns
-    viewCampaigns: true,
-    createCampaign: true,
-    editCampaign: true,
-    deleteCampaign: true,
-    launchCampaign: true,
-    viewCampaignAnalytics: true,
     
     // Messages
     viewMessages: true,
@@ -105,12 +93,13 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteEntity: true,
     manageEntityHierarchy: true,
     
-    // Monitoring
-    viewMonitoring: true,
-    viewAlerts: true,
-    acknowledgeAlerts: true,
-    configureAlerts: true,
-    viewSystemHealth: true,
+    // Sub-tenant management
+    viewSubTenants: true,
+    createSubTenant: true,
+    editSubTenant: true,
+    deleteSubTenant: true,
+    manageSubTenantUsers: true,
+    monitorSubTenantMessages: true,
     
     // Administration
     viewAdministration: true,
@@ -122,8 +111,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     manageIntegrations: true,
   },
   
-  // Manager: Tenant administrator with most permissions within their tenant
-  Manager: {
+  // TenantAdmin: Tenant administrator who can manage sub-tenants (companies/departments) and monitor E164 users
+  TenantAdmin: {
     // Dashboard
     viewDashboard: true,
     viewAdvancedMetrics: true,
@@ -142,13 +131,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteSpyNumber: false, // Cannot delete spy numbers
     configureSpyNumber: true,
     
-    // Campaigns
-    viewCampaigns: true,
-    createCampaign: true,
-    editCampaign: true,
-    deleteCampaign: true,
-    launchCampaign: true,
-    viewCampaignAnalytics: true,
     
     // Messages
     viewMessages: true,
@@ -163,12 +145,13 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteEntity: true,
     manageEntityHierarchy: true,
     
-    // Monitoring
-    viewMonitoring: true,
-    viewAlerts: true,
-    acknowledgeAlerts: true,
-    configureAlerts: true,
-    viewSystemHealth: true,
+    // Sub-tenant management (can manage companies/departments under their tenant)
+    viewSubTenants: true,
+    createSubTenant: true,
+    editSubTenant: true,
+    deleteSubTenant: true,
+    manageSubTenantUsers: true,
+    monitorSubTenantMessages: true,
     
     // Administration (limited to tenant management)
     viewAdministration: true,
@@ -200,13 +183,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteSpyNumber: false,
     configureSpyNumber: false,
     
-    // Campaigns
-    viewCampaigns: true,
-    createCampaign: false,
-    editCampaign: false,
-    deleteCampaign: false,
-    launchCampaign: false,
-    viewCampaignAnalytics: false, // Cannot see analytics
     
     // Messages
     viewMessages: true,
@@ -221,8 +197,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     deleteEntity: false,
     manageEntityHierarchy: false,
     
-    // Monitoring
-    viewMonitoring: true,
+    // Sub-tenant management (E164 users can only view their own context)
+    viewSubTenants: false,
+    createSubTenant: false,
+    editSubTenant: false,
+    deleteSubTenant: false,
+    manageSubTenantUsers: false,
+    monitorSubTenantMessages: false, // Can only see their own messages
+    
     viewAlerts: true,
     acknowledgeAlerts: false, // Cannot acknowledge alerts
     configureAlerts: false,
@@ -241,15 +223,31 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
 
 // Helper functions for permission checking
 export function hasPermission(role: UserRole, permission: keyof Permission): boolean {
-  return ROLE_PERMISSIONS[role][permission];
+  const rolePermissions = ROLE_PERMISSIONS[role];
+  if (!rolePermissions) {
+    console.warn(`Unknown role: ${role}. Defaulting to User permissions.`);
+    return ROLE_PERMISSIONS['User'][permission];
+  }
+  return rolePermissions[permission];
 }
 
 export function getUserPermissions(role: UserRole): Permission {
-  return ROLE_PERMISSIONS[role];
+  const rolePermissions = ROLE_PERMISSIONS[role];
+  if (!rolePermissions) {
+    console.warn(`Unknown role: ${role}. Defaulting to User permissions.`);
+    return ROLE_PERMISSIONS['User'];
+  }
+  return rolePermissions;
 }
 
 // Check if user can access a specific route
 export function canAccessRoute(role: UserRole, route: string): boolean {
+  // Handle unknown roles
+  if (!ROLE_PERMISSIONS[role]) {
+    console.warn(`Unknown role: ${role}. Using User permissions for route access.`);
+    role = 'User';
+  }
+
   switch (route) {
     case '/':
       return hasPermission(role, 'viewDashboard');
@@ -257,14 +255,16 @@ export function canAccessRoute(role: UserRole, route: string): boolean {
       return hasPermission(role, 'viewWhatsAppAccounts');
     case '/spy-numbers':
       return hasPermission(role, 'viewSpyNumbers');
-    case '/campaigns':
-      return hasPermission(role, 'viewCampaigns');
     case '/messages':
+    case '/communications':
+    case '/communications/whatsapp':
+    case '/communications/filters':
       return hasPermission(role, 'viewMessages');
     case '/entities':
+    case '/entities/users':
+    case '/entities/structure':
+    case '/entities/registration':
       return hasPermission(role, 'viewEntities');
-    case '/monitoring':
-      return hasPermission(role, 'viewMonitoring');
     case '/administration':
       return hasPermission(role, 'viewAdministration');
     default:
@@ -275,25 +275,31 @@ export function canAccessRoute(role: UserRole, route: string): boolean {
 // Get role display information
 export function getRoleInfo(role: UserRole) {
   const roleInfo = {
-    Admin: {
+    SystemAdmin: {
       label: 'System Administrator',
-      description: 'Full access to all system features and tenants',
+      description: 'Full system access across all tenants and system management',
       color: 'bg-error-500 text-white',
       badgeColor: 'destructive' as const,
     },
-    Manager: {
-      label: 'Tenant Administrator', 
-      description: 'Manage tenant users, accounts, and configurations',
+    TenantAdmin: {
+      label: 'Tenant Administrator',
+      description: 'Manages tenant and sub-tenants (companies/departments), monitors E164 users',
       color: 'bg-warning-500 text-white',
       badgeColor: 'secondary' as const,
     },
     User: {
-      label: 'Tenant User',
-      description: 'Basic access to messaging and monitoring features',
+      label: 'E164 User',
+      description: 'Basic element user with limited access to own messages and profile',
       color: 'bg-primary text-white',
       badgeColor: 'default' as const,
     },
   };
   
-  return roleInfo[role];
+  const info = roleInfo[role];
+  if (!info) {
+    console.warn(`Unknown role: ${role}. Returning default User role info.`);
+    return roleInfo.User;
+  }
+  
+  return info;
 }

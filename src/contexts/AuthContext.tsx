@@ -31,7 +31,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedUser) {
       try {
         const userData = JSON.parse(storedUser);
+        
+        // Migrate old role names to new ones
+        if (userData.role === 'Admin') {
+          userData.role = 'SystemAdmin';
+        } else if (userData.role === 'Manager') {
+          userData.role = 'TenantAdmin';
+        }
+        // 'User' role stays the same
+        
         setUser(userData);
+        
+        // Update localStorage with migrated data
+        localStorage.setItem('user', JSON.stringify(userData));
       } catch (error) {
         console.error('Error parsing stored user data:', error);
         localStorage.removeItem('user');

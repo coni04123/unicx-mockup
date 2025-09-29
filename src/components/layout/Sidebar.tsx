@@ -12,8 +12,6 @@ import {
   EyeIcon,
   BuildingOfficeIcon,
   EnvelopeIcon,
-  MegaphoneIcon,
-  ChartBarIcon,
   CogIcon,
   UsersIcon,
   ExclamationTriangleIcon,
@@ -25,8 +23,6 @@ import {
   EyeIcon as EyeSolidIcon,
   BuildingOfficeIcon as BuildingSolidIcon,
   EnvelopeIcon as EnvelopeSolidIcon,
-  MegaphoneIcon as MegaphoneSolidIcon,
-  ChartBarIcon as ChartSolidIcon,
   CogIcon as CogSolidIcon,
   UsersIcon as UsersSolidIcon,
   ExclamationTriangleIcon as ExclamationSolidIcon,
@@ -36,11 +32,12 @@ import {
 interface NavigationItem {
   name: string;
   href: string;
-  icon: React.ComponentType<any>;
-  iconSolid: React.ComponentType<any>;
+  icon?: React.ComponentType<any>;
+  iconSolid?: React.ComponentType<any>;
   current: boolean;
   badge?: number;
   badgeColor?: 'red' | 'yellow' | 'green' | 'blue';
+  children?: Omit<NavigationItem, 'icon' | 'iconSolid' | 'children'>[];
 }
 
 export default function Sidebar() {
@@ -57,22 +54,6 @@ export default function Sidebar() {
       current: pathname === '/',
     },
     {
-      name: t('whatsappAccounts'),
-      href: '/whatsapp-accounts',
-      icon: ChatBubbleLeftRightIcon,
-      iconSolid: ChatSolidIcon,
-      current: pathname.startsWith('/whatsapp-accounts'),
-      badge: 1,
-      badgeColor: 'red',
-    },
-    {
-      name: t('spyNumbers'),
-      href: '/spy-numbers',
-      icon: EyeIcon,
-      iconSolid: EyeSolidIcon,
-      current: pathname.startsWith('/spy-numbers'),
-    },
-    {
       name: t('entities'),
       href: '/entities',
       icon: BuildingOfficeIcon,
@@ -80,36 +61,11 @@ export default function Sidebar() {
       current: pathname.startsWith('/entities'),
     },
     {
-      name: t('messages'),
-      href: '/messages',
+      name: t('communications'),
+      href: '/communication',
       icon: EnvelopeIcon,
       iconSolid: EnvelopeSolidIcon,
-      current: pathname.startsWith('/messages'),
-    },
-    {
-      name: t('campaigns'),
-      href: '/campaigns',
-      icon: MegaphoneIcon,
-      iconSolid: MegaphoneSolidIcon,
-      current: pathname.startsWith('/campaigns'),
-      badge: 1,
-      badgeColor: 'green',
-    },
-    {
-      name: t('monitoring'),
-      href: '/monitoring',
-      icon: ChartBarIcon,
-      iconSolid: ChartSolidIcon,
-      current: pathname.startsWith('/monitoring'),
-      badge: 2,
-      badgeColor: 'yellow',
-    },
-    {
-      name: t('administration'),
-      href: '/administration',
-      icon: UsersIcon,
-      iconSolid: UsersSolidIcon,
-      current: pathname.startsWith('/administration'),
+      current: pathname.startsWith('/communication'),
     },
   ];
 
@@ -137,11 +93,11 @@ export default function Sidebar() {
         <div className="flex items-center">
           <div className="flex-shrink-0">
             <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">U</span>
+              <span className="text-white font-bold text-sm">2</span>
             </div>
           </div>
           <div className="ml-3">
-            <h1 className="text-xl font-bold text-gray-900">Unicx</h1>
+            <h1 className="text-xl font-bold text-gray-900">2N5</h1>
             <p className="text-xs text-gray-500">WhatsApp Management</p>
           </div>
         </div>
@@ -150,38 +106,72 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="mt-5 flex-1 px-2 space-y-1">
         {navigation.map((item) => {
-          const IconComponent = item.current ? item.iconSolid : item.icon;
-          
           // Check if user has permission to access this route
           if (!canAccessRoute(item.href)) {
             return null;
           }
+
+          const IconComponent = item.current ? item.iconSolid : item.icon;
           
           return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`nav-link ${item.current ? 'active' : ''}`}
-            >
-              <IconComponent
-                className={`mr-3 flex-shrink-0 h-6 w-6 ${
-                  item.current
-                    ? 'text-primary-600'
-                    : 'text-gray-400 group-hover:text-primary-600'
-                }`}
-                aria-hidden="true"
-              />
-              <span className="flex-1">{item.name}</span>
-              {item.badge && item.badge > 0 && (
-                <span
-                  className={`ml-3 inline-block py-0.5 px-2 text-xs rounded-full ${getBadgeClasses(
-                    item.badgeColor || 'gray'
-                  )}`}
-                >
-                  {item.badge}
-                </span>
+            <div key={item.name}>
+              <Link
+                href={item.href}
+                className={`nav-link ${item.current ? 'active' : ''}`}
+              >
+                {IconComponent && (
+                  <IconComponent
+                    className={`mr-3 flex-shrink-0 h-6 w-6 ${
+                      item.current
+                        ? 'text-primary-600'
+                        : 'text-gray-400 group-hover:text-primary-600'
+                    }`}
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="flex-1">{item.name}</span>
+                {item.badge && item.badge > 0 && (
+                  <span
+                    className={`ml-3 inline-block py-0.5 px-2 text-xs rounded-full ${getBadgeClasses(
+                      item.badgeColor || 'gray'
+                    )}`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </Link>
+              
+              {/* Sub-navigation */}
+              {item.children && (
+                <div className="ml-6 mt-1 space-y-1">
+                  {item.children.map((child) => {
+                    // Check permission for child routes
+                    if (!canAccessRoute(child.href)) {
+                      return null;
+                    }
+                    
+                    return (
+                      <Link
+                        key={child.name}
+                        href={child.href}
+                        className={`nav-link text-sm ${child.current ? 'active' : ''}`}
+                      >
+                        <span className="flex-1">{child.name}</span>
+                        {child.badge && child.badge > 0 && (
+                          <span
+                            className={`ml-3 inline-block py-0.5 px-2 text-xs rounded-full ${getBadgeClasses(
+                              child.badgeColor || 'gray'
+                            )}`}
+                          >
+                            {child.badge}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
               )}
-            </Link>
+            </div>
           );
         })}
       </nav>

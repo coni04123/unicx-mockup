@@ -18,25 +18,25 @@ import {
 // Demo credentials for different user roles
 const demoCredentials = [
   {
-    email: 'admin@unicx.com',
+    email: 'admin@2n5.com',
     password: 'admin123',
-    role: 'Admin',
-    tenant: 'Unicx Global',
-    description: 'Full system access'
+    role: 'SystemAdmin',
+    tenant: '2N5 Global',
+    description: 'Full system access across all tenants'
   },
   {
     email: 'manager@acme.com',
     password: 'manager123',
-    role: 'Manager',
+    role: 'TenantAdmin',
     tenant: 'ACME Corp',
-    description: 'Campaign & account management'
+    description: 'Manage sub-tenants and E164 users'
   },
   {
     email: 'user@techstart.com',
     password: 'user123',
     role: 'User',
     tenant: 'TechStart Inc',
-    description: 'Basic messaging access'
+    description: 'E164 user with basic access'
   }
 ];
 
@@ -115,7 +115,7 @@ export default function LoginPage() {
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <ChatBubbleLeftRightIcon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-foreground">Unicx</span>
+              <span className="text-2xl font-bold text-foreground">2N5</span>
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground">Welcome Back</h1>
             <p className="text-muted-foreground mt-2">
@@ -291,7 +291,7 @@ export default function LoginPage() {
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Streamline your WhatsApp Business communications with our comprehensive 
-              management platform. Monitor spy numbers, run campaigns, and manage 
+              management platform. Monitor spy numbers, manage messages, and handle 
               multiple accounts with ease.
             </p>
             

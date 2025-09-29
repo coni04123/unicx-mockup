@@ -233,11 +233,6 @@ export interface DashboardMetrics {
     failed24h: number;
     deliveryRate: number;
   };
-  campaigns: {
-    active: number;
-    completed24h: number;
-    totalSent24h: number;
-  };
   entities: {
     total: number;
     customers: number;

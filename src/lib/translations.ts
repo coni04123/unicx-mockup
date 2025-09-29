@@ -34,9 +34,9 @@ const translations = {
     whatsappAccounts: "WhatsApp Accounts",
     spyNumbers: "Spy Numbers",
     entities: "Entities",
-    messages: "Messages",
-    campaigns: "Campaigns",
-    monitoring: "Monitoring",
+    communications: "Communications",
+    whatsappMonitoring: "WhatsApp Monitoring",
+    messageFiltering: "Message Filtering",
     administration: "Administration",
     settings: "Settings",
     logout: "Logout"
@@ -51,8 +51,7 @@ const translations = {
     quickActions: "Quick Actions",
     whatsappAccountsCard: "WhatsApp Accounts",
     spyNumbersCard: "Spy Numbers",
-    messagesCard: "Messages",
-    campaignsCard: "Campaigns"
+    messagesCard: "Messages"
   },
   whatsappAccounts: {
     title: "WhatsApp Accounts",
@@ -121,45 +120,21 @@ const translations = {
     read: "Read",
     failed: "Failed"
   },
-  campaigns: {
-    title: "Campaigns",
-    createCampaign: "Create Campaign",
-    campaignName: "Campaign Name",
-    description: "Description",
-    messageTemplate: "Message Template",
-    targets: "Targets",
-    scheduled: "Scheduled",
-    running: "Running",
-    paused: "Paused",
-    completed: "Completed",
-    draft: "Draft",
-    totalMessages: "Total Messages",
-    sentMessages: "Sent Messages",
-    deliveredMessages: "Delivered Messages",
-    failedMessages: "Failed Messages",
-    deliveryRate: "Delivery Rate"
-  },
-  monitoring: {
-    title: "Monitoring",
-    systemMetrics: "System Metrics",
-    alertManagement: "Alert Management",
-    performanceCharts: "Performance Charts",
-    messageVolume: "Message Volume",
-    deliveryRates: "Delivery Rates",
-    systemUptime: "System Uptime",
-    apiLatency: "API Latency"
-  },
   administration: {
     title: "Administration",
     userManagement: "User Management",
     roleManagement: "Role Management",
     auditLogs: "Audit Logs",
     tenantManagement: "Tenant Management",
+    subTenantManagement: "Sub-Tenant Management",
     systemSettings: "System Settings",
     users: "Users",
     roles: "Roles",
     permissions: "Permissions",
-    logs: "Logs"
+    logs: "Logs",
+    systemAdmin: "System Administrator",
+    tenantAdmin: "Tenant Administrator",
+    e164User: "E164 User"
   },
   alerts: {
     accountBlocked: "Account Blocked",
