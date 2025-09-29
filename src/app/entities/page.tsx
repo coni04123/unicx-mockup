@@ -154,7 +154,7 @@ export default function EntitiesPage() {
         </div>
 
         {/* Entity Structure Preview */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        {/* <div className="bg-white rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Entity Structure Overview</h3>
           <div className="space-y-3">
             <div className="flex items-center text-sm">
@@ -224,7 +224,7 @@ export default function EntitiesPage() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Getting Started Guide */}
         <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-lg p-6">
