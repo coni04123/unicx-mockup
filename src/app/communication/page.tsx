@@ -271,9 +271,11 @@ export default function CommunicationPage() {
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">WhatsApp Communication Monitoring</h1>
             <p className="mt-2 text-sm text-gray-700">
-              Navigate through your elastic entity structure and monitor WhatsApp messages - {filteredWhatsAppMessages.length} messages
+              Navigate through your elastic entity structure and monitor WhatsApp messages&nbsp;-&nbsp;
+              <span className='inline-flex px-2 py-1 bg-cyan-700 text-secondary rounded-md'>{filteredWhatsAppMessages.length} messages</span>
+              <br />
               {selectedEntityPath && (
-                <span className="ml-2 inline-flex items-center px-2 py-1 rounded-md text-xs bg-primary-100 text-primary-800">
+                <span className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-primary-100 text-primary-800">
                   <MapPinIcon className="w-3 h-3 mr-1" />
                   {selectedEntityPath}
                 </span>

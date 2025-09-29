@@ -20,6 +20,7 @@ export interface E164User {
   email: string;
   entityId: string; // Which entity they belong to
   entityPath: string; // Full path in elastic structure
+  role: 'TenantAdmin' | 'User'; // User role within the system
   registrationStatus: 'pending' | 'registered' | 'cancelled' | 'invited';
   registrationDate?: string;
   cancellationDate?: string;
@@ -469,6 +470,7 @@ export const e164Users: E164User[] = [
     email: 'sarah.johnson@entityx-c1.com',
     entityId: 'dept-c1-sales',
     entityPath: 'Entity X > Company C1 > Sales Department',
+    role: 'TenantAdmin', // Sales department admin
     registrationStatus: 'registered',
     registrationDate: '2024-02-01T09:00:00Z',
     whatsappConnected: true,
@@ -483,6 +485,7 @@ export const e164Users: E164User[] = [
     email: 'michael.davis@entityx-c1.com',
     entityId: 'dept-c1-sales',
     entityPath: 'Entity X > Company C1 > Sales Department',
+    role: 'User', // Regular sales user
     registrationStatus: 'registered',
     registrationDate: '2024-02-01T10:00:00Z',
     whatsappConnected: true,
@@ -498,6 +501,7 @@ export const e164Users: E164User[] = [
     email: 'emily.wilson@entityx-c1.com',
     entityId: 'dept-c1-marketing',
     entityPath: 'Entity X > Company C1 > Marketing Department',
+    role: 'TenantAdmin', // Marketing department admin
     registrationStatus: 'registered',
     registrationDate: '2024-02-02T09:00:00Z',
     whatsappConnected: true,
@@ -512,6 +516,7 @@ export const e164Users: E164User[] = [
     email: 'james.brown@entityx-c1.com',
     entityId: 'dept-c1-marketing',
     entityPath: 'Entity X > Company C1 > Marketing Department',
+    role: 'User', // Regular marketing user
     registrationStatus: 'invited',
     lastQRCodeSent: '2024-02-15T14:30:00Z',
     whatsappConnected: false,
@@ -527,6 +532,7 @@ export const e164Users: E164User[] = [
     email: 'lisa.anderson@entityx-c1.com',
     entityId: 'dept-c1-it',
     entityPath: 'Entity X > Company C1 > IT Department',
+    role: 'TenantAdmin', // IT department admin
     registrationStatus: 'registered',
     registrationDate: '2024-02-03T09:00:00Z',
     whatsappConnected: true,
@@ -542,6 +548,7 @@ export const e164Users: E164User[] = [
     email: 'david.miller@entityx-c2.com',
     entityId: 'dept-c2-operations',
     entityPath: 'Entity X > Company C2 > Operations Department',
+    role: 'TenantAdmin', // Operations department admin
     registrationStatus: 'registered',
     registrationDate: '2024-02-04T09:00:00Z',
     whatsappConnected: true,
@@ -556,6 +563,7 @@ export const e164Users: E164User[] = [
     email: 'jessica.taylor@entityx-c2.com',
     entityId: 'dept-c2-operations',
     entityPath: 'Entity X > Company C2 > Operations Department',
+    role: 'User', // Operations team member
     registrationStatus: 'registered',
     registrationDate: '2024-02-04T10:00:00Z',
     whatsappConnected: true,
@@ -571,6 +579,7 @@ export const e164Users: E164User[] = [
     email: 'robert.garcia@entityx-c2.com',
     entityId: 'dept-c2-finance',
     entityPath: 'Entity X > Company C2 > Finance Department',
+    role: 'TenantAdmin', // Finance department admin
     registrationStatus: 'cancelled',
     registrationDate: '2024-02-05T09:00:00Z',
     cancellationDate: '2024-02-10T15:00:00Z',
@@ -587,6 +596,7 @@ export const e164Users: E164User[] = [
     email: 'amanda.white@entityx-c3.com',
     entityId: 'dept-c3-hr',
     entityPath: 'Entity X > Company C3 > Human Resources',
+    role: 'TenantAdmin', // HR department admin
     registrationStatus: 'pending',
     whatsappConnected: false,
     initials: 'AW',
@@ -600,6 +610,7 @@ export const e164Users: E164User[] = [
     email: 'christopher.lee@entityx-c3.com',
     entityId: 'dept-c3-hr',
     entityPath: 'Entity X > Company C3 > Human Resources',
+    role: 'User', // HR team member
     registrationStatus: 'registered',
     registrationDate: '2024-02-06T09:00:00Z',
     whatsappConnected: true,
